@@ -11,14 +11,14 @@ import java.net.URLEncoder;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-public class TelegramHttp {
+public class VkHttp {
     private final Main instance;
 
     private final List<Integer> ids;
 
     private final String token;
 
-    public TelegramHttp(List<Integer> ids, String token, Main instance) {
+    public VkHttp(List<Integer> ids, String token, Main instance) {
         this.instance = instance;
         this.ids = ids;
         this.token = token;
@@ -26,15 +26,15 @@ public class TelegramHttp {
 
     public void sendMessage(String text) {
         CompletableFuture.runAsync(() -> {
-            for (Integer chatId : ids) {
+            for (Integer peerId : ids) {
                 try {
-                    String urlString = "https://api.telegram.org/bot" + token + "/sendMessage?text=" + URLEncoder.encode(text, "UTF-8") + "&chat_id=" + chatId;
+                    String urlString = "https://api.vk.com/method/messages.send?access_token=" + token + "&message=" + URLEncoder.encode(text, "UTF-8") + "&peer_id=" + peerId + "&random_id=0&v=5.199";
                     URL url = new URL(urlString);
                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                     connection.setRequestMethod("GET");
                     int responseCode = connection.getResponseCode();
 
-                    if (responseCode != HttpURLConnection.HTTP_OK) {
+                    if (responseCode !=  HttpURLConnection.HTTP_OK) {
                         BufferedReader in = new BufferedReader(new InputStreamReader(connection.getErrorStream()));
                         StringBuilder jsonResponse = new StringBuilder();
                         String inputLine;
@@ -42,6 +42,7 @@ public class TelegramHttp {
                         while ((inputLine = in.readLine()) != null) {
                             jsonResponse.append(inputLine);
                         }
+
                         in.close();
 
                         instance.getLogger().info("Произошла ошибка при отправке сообщения: " + jsonResponse);

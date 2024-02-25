@@ -3,7 +3,19 @@ settings:
     chat-id: # сюда желательно указывать чаты, узнать ID чата можно тут: https://api.telegram.org/botToken/getUpdates
       - ""
     token: ""
+    enable: false
+  vk:
+    chat-id:
+      - ""
+    token: ""
     enable: true
+  ds:
+    url: ""
+    enable: false
+    color:
+      red: 15548997
+      green: 5763719
+      yellow: 16776960
 
 messages:
   attempt: "попытка"
@@ -17,6 +29,11 @@ messages:
     - "IP: %ip%"
   success-auth:
     - "Администратор успешно авторизовался в систему!"
+    - ""
+    - "Ник: %player%"
+    - "IP: %ip%"
+  logout-player:
+    - "Администратор завершил сессию!"
     - ""
     - "Ник: %player%"
     - "IP: %ip%"
