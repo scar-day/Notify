@@ -1,9 +1,8 @@
 package me.scarday.notify.handler;
 
 import me.scarday.notify.Main;
-import org.bukkit.event.Cancellable;
+import me.scarday.notify.util.Utility;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.player.PlayerJoinEvent;
 import ru.overwrite.protect.bukkit.api.ServerProtectorCaptureEvent;
 import ru.overwrite.protect.bukkit.api.ServerProtectorPasswordEnterEvent;
 import ru.overwrite.protect.bukkit.api.ServerProtectorPasswordFailEvent;
@@ -22,7 +21,7 @@ public class Listener implements org.bukkit.event.Listener {
     @EventHandler
     public void ServerProtectorCaptureEvent(ServerProtectorCaptureEvent e) {
         if (instance.tg != null) {
-            instance.tg.sendMessage(joinToString(instance.getConfig().getStringList("messages.joined-player")).replace("%player%", e.getPlayer().getName()).replace("%ip%", e.getPlayer().getAddress().getAddress().getHostAddress()));
+            instance.tg.sendMessage(joinToString(instance.getConfig().getStringList("messages.captured-player")).replace("%player%", e.getPlayer().getName()).replace("%ip%", e.getPlayer().getAddress().getAddress().getHostAddress()));
         }
     }
 
@@ -35,8 +34,11 @@ public class Listener implements org.bukkit.event.Listener {
 
     @EventHandler
     public void ServerProtectorPasswordFailEvent(ServerProtectorPasswordFailEvent e) {
+        String attempts = Utility.declineAttempts(e.getAttempts(), instance.getConfig().getString("messages.attempt"),
+                instance.getConfig().getString("messages.tryings"),
+                instance.getConfig().getString("messages.attempts"));
         if (instance.tg != null) {
-            instance.tg.sendMessage(joinToString(instance.getConfig().getStringList("messages.fail-auth")).replace("%player%", e.getPlayer().getName()).replace("%ip%", e.getPlayer().getAddress().getAddress().getHostAddress()).replace("%attempts%", String.valueOf(e.getAttempts())));
+            instance.tg.sendMessage(joinToString(instance.getConfig().getStringList("messages.fail-auth")).replace("%player%", e.getPlayer().getName()).replace("%ip%", e.getPlayer().getAddress().getAddress().getHostAddress()).replace("%attempts%", attempts));
         }
     }
 
