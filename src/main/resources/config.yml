@@ -1,0 +1,19 @@
+settings:
+  tg:
+    chat-id: # сюда желательно указывать чаты, узнать ID чата можно тут: https://api.telegram.org/botToken/getUpdates
+      - ""
+    token: ""
+    enable: true
+
+messages:
+  joined-player:
+    - "Администратор %player% зашел в игру %ip%"
+  success-auth:
+    - "Администратор %player% успешно авторизовался в систему!"
+    - "Его IP: %ip%"
+  enter-password:
+    - "Администратор %player% ввел пароль: %password%"
+    - "Его IP: %ip%"
+  fail-auth:
+    - "Администратор %player% ввёл неправильно пароль: %attempts% попыток"
+    - "Его IP: %ip%"
