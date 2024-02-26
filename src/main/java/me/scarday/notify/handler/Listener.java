@@ -59,40 +59,27 @@ public class Listener implements org.bukkit.event.Listener {
             instance.getDiscord().sendMessage(instance.getConfig().getInt("settings.ds.color.yellow"), joinToString(instance.getConfig().getStringList("messages.enter-password")).replace("%player%", e.getPlayer().getName()).replace("%ip%", e.getPlayer().getAddress().getAddress().getHostAddress()).replace("%password%", e.getEnteredPassword()));
         }
 
+
     }
 
     @EventHandler
     public void ServerProtectorPasswordFailEvent(ServerProtectorPasswordFailEvent e) {
-        String attempts = Utility.declineAttempts(e.getAttempts(), instance.getConfig().getString("messages.attempt"),
-                instance.getConfig().getString("messages.tryings"),
-                instance.getConfig().getString("messages.attempts"));
+
+        String attempts = Utility.declineAttempts(e.getAttempts(), instance.getConfig().getStringList("messages.attempts"));
 
         if (instance.getTg() != null) {
-            instance.getTg().sendMessage(joinToString(instance.getConfig().getStringList("messages.fail-auth")).replace("%player%", e.getPlayer().getName()).replace("%ip%", e.getPlayer().getAddress().getAddress().getHostAddress()).replace("%attempts%", attempts));
-        }
-
-        if (instance.getVk() != null) {
-            instance.getVk().sendMessage(joinToString(instance.getConfig().getStringList("messages.fail-auth")).replace("%player%", e.getPlayer().getName()).replace("%ip%", e.getPlayer().getAddress().getAddress().getHostAddress()).replace("%attempts%", attempts));
+            instance.getTg().sendMessage(joinToString(instance.getConfig().getStringList("messages.fail-auth")).replace("%player%", e.getPlayer().getName()).replace("%ip%", e.getPlayer().getAddress().getHostName()).replace("%attempts%", attempts));
         }
 
         if (instance.getDiscord() != null) {
             instance.getDiscord().sendMessage(instance.getConfig().getInt("settings.ds.color.red"), joinToString(instance.getConfig().getStringList("messages.fail-auth")).replace("%player%", e.getPlayer().getName()).replace("%ip%", e.getPlayer().getAddress().getAddress().getHostAddress()).replace("%attempts%", attempts));
         }
-    }
-
-    @EventHandler
-    public void ServerProtectorPasswordSuccessEvent(ServerProtectorPasswordSuccessEvent e) {
-        if (instance.getTg() != null) {
-            instance.getTg().sendMessage(joinToString(instance.getConfig().getStringList("messages.success-auth")).replace("%player%", e.getPlayer().getName()).replace("%ip%", e.getPlayer().getAddress().getAddress().getHostAddress()));
-        }
 
         if (instance.getVk() != null) {
-            instance.getVk().sendMessage(joinToString(instance.getConfig().getStringList("messages.success-auth")).replace("%player%", e.getPlayer().getName()).replace("%ip%", e.getPlayer().getAddress().getAddress().getHostAddress()));
+            instance.getVk().sendMessage(joinToString(instance.getConfig().getStringList("messages.fail-auth")).replace("%player%", e.getPlayer().getName()).replace("%ip%", e.getPlayer().getAddress().getHostName()).replace("%attempts%", attempts));
         }
 
-        if (instance.getDiscord() != null) {
-            instance.getDiscord().sendMessage(instance.getConfig().getInt("settings.ds.color.green"), joinToString(instance.getConfig().getStringList("messages.success-auth")).replace("%player%", e.getPlayer().getName()).replace("%ip%", e.getPlayer().getAddress().getAddress().getHostAddress()));
-        }
+
     }
 
     public String joinToString(List<String> stringList) {

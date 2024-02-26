@@ -27,23 +27,17 @@ public final class Main extends JavaPlugin {
             tg = new TelegramHttp(getConfig().getIntegerList("settings.tg.chat-id"), getConfig().getString("settings.tg.token"), this);
 
             getLogger().info("Интеграция с Telegram включена");
-        } else {
-            getLogger().info("Интеграция с Telegram выключена");
         }
 
         if (getConfig().getBoolean("settings.vk.enable")) {
             vk = new VkHttp(getConfig().getIntegerList("settings.vk.chat-id"), getConfig().getString("settings.vk.token"), this);
             getLogger().info("Интеграция с VK включена");
-        } else {
-            getLogger().info("Интеграция с VK выключена");
         }
 
         if (getConfig().getBoolean("settings.ds.enable")) {
             discord = new DiscordHttp(getConfig().getString("settings.ds.url"), this);
 
             getLogger().info("Интеграция с Discord включена");
-        } else {
-            getLogger().info("Интеграция с Discord выключена");
         }
 
         getServer().getPluginManager().registerEvents(new Listener(this), this);
