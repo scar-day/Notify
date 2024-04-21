@@ -8,7 +8,7 @@ settings:
     chat-id:
       - ""
     token: ""
-    enable: true
+    enable: false
   ds:
     url: ""
     enable: false
@@ -22,7 +22,7 @@ messages:
     - попыт
     - ка
     - ки
-    - ок # thx dotmix
+    - ок
 
   captured-player:
     - "Был пойман игрок с админ-правами!"
