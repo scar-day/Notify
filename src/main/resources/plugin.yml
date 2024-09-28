@@ -1,5 +1,5 @@
 name: Notify
 version: '${version}'
-main: me.scarday.notify.Main
+main: dev.scarday.notify.Notify
 description: ScarDay
 depend: [UltimateServerProtector]

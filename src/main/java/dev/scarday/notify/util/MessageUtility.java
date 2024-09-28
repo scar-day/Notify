@@ -1,4 +1,4 @@
-package me.scarday.notify.util;
+package dev.scarday.notify.util;
 
 import lombok.experimental.UtilityClass;
 

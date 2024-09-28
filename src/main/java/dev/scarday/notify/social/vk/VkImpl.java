@@ -1,8 +1,10 @@
-package me.scarday.notify.social.impl;
+package dev.scarday.notify.social.vk;
 
-import me.scarday.notify.Main;
-import me.scarday.notify.social.Builder;
-import me.scarday.notify.social.Social;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import dev.scarday.notify.Notify;
+import dev.scarday.notify.social.MessageBuilder;
+import dev.scarday.notify.social.Social;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -10,29 +12,29 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-public class TelegramImpl implements Social {
-    private final Main instance;
+public class VkImpl implements Social {
+
+    private final Notify instance;
 
     private final List<Integer> ids;
 
     private final String token;
 
-    public TelegramImpl(Main instance) {
+    public VkImpl(Notify instance) {
         this.instance = instance;
-        token = instance.getConfig().getString("settings.tg.token");
-        ids = instance.getConfig().getIntegerList("settings.tg.chat-id");
+        ids = instance.getConfig().getIntegerList("settings.vk.chat-id");
+        token = instance.getConfig().getString("settings.vk.token");
     }
 
-
-    @Override
-    public void sendMessage(Builder builder) {
+    public void sendMessage(MessageBuilder builder) {
         CompletableFuture.runAsync(() -> {
-            for (Integer chatId : ids) {
+            for (Integer peerId : ids) {
                 try {
-                    String urlString = "https://api.telegram.org/bot" + token + "/sendMessage?text=" + URLEncoder.encode(builder.getMessage(), "UTF-8") + "&chat_id=" + chatId;
+                    String urlString = "https://api.vk.com/method/messages.send?access_token=" + token + "&message=" + URLEncoder.encode(builder.getMessage(), StandardCharsets.UTF_8) + "&peer_id=" + peerId + "&random_id=0&v=5.199";
                     URL url = new URL(urlString);
                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                     connection.setRequestMethod("GET");
@@ -46,6 +48,7 @@ public class TelegramImpl implements Social {
                         while ((inputLine = in.readLine()) != null) {
                             jsonResponse.append(inputLine);
                         }
+
                         in.close();
 
                         instance.getLogger().info("Произошла ошибка при отправке сообщения: " + jsonResponse);
@@ -60,6 +63,16 @@ public class TelegramImpl implements Social {
 
     @Override
     public boolean isConnected() {
-        return false;
+        return true;
+    }
+
+    @Override
+    public String getName() {
+        return "VK";
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return instance.getConfig().getBoolean("settings.vk.enable", false);
     }
 }
